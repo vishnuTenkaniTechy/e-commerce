@@ -1,0 +1,31 @@
+<!-- <mat-spinner strokeWidth="5" [diameter]="50"></mat-spinner> -->
+<h2 style="text-align: center;margin-bottom: 2rem;margin-top: 2rem;">Register</h2>
+<mat-card>
+    <form (submit)="onSignupForm(singupForm)" #singupForm="ngForm">
+        <mat-form-field>
+            <input matInput name="userName" ngModel type="text" #userNameInput="ngModel" placeholder="UserName" required
+                userName>
+            <mat-error *ngIf="userNameInput.invalid">Please enter a vaild UserName.</mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-stroked-button type="button" (click)="fileInput.click()">Pick profile image</button>
+            <input type="file" #fileInput (change)="pickedImage($event)">
+        </div>
+        <mat-form-field>
+            <input matInput name="email" ngModel type="E-mail" #emailInput="ngModel" placeholder="E-mail" required
+                email>
+            <mat-error *ngIf="emailInput.invalid">Please enter a vaild mail address.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input type="password" name="password" ngModel #passwordInput="ngModel" matInput placeholder="Passwod"
+                required>
+            <mat-error *ngIf="passwordInput.invalid">Please enter vaild password.</mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field>
+        <input type="password" name="retypepassword" ngModel #retypepasswordInput="ngModel" matInput placeholder="Re-type passwod" required>
+          <mat-error *ngIf="retypepasswordInput.invalid">Please enter vaild password.</mat-error>
+        </mat-form-field> -->
+        <button mat-raised-button color="accent" type="submit">Signup</button>
+    </form>
+</mat-card>
