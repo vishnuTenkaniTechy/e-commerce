@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import {
-  MatInputModule, MatCardModule, MatToolbarModule,
-  MatButtonModule, MatExpansionModule,
-  MatProgressSpinnerModule, MatMenuModule, MatPaginatorModule,
-  MatDialogModule
-} from '@angular/material'
-
-
-
+  MatInputModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatButtonModule,
+  MatExpansionModule,
+  MatProgressSpinnerModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatDialogModule,
+} from '@angular/material';
 
 @NgModule({
   declarations: [],
@@ -22,7 +24,7 @@ import {
     MatMenuModule,
     MatDialogModule,
     MatCardModule,
-    MatPaginatorModule
-  ]
+    MatPaginatorModule,
+  ],
 })
-export class AngularmaterialModule { }
+export class AngularmaterialModule {}

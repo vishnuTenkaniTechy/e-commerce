@@ -1,0 +1,38 @@
+<h2 style="text-align: center; margin-bottom: 2rem; margin-top: 2rem;">
+  Login
+</h2>
+<mat-card>
+  <form (submit)="onLoginForm(loginForm)" #loginForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        name="email"
+        ngModel
+        type="E-mail"
+        #emailInput="ngModel"
+        placeholder="E-mail"
+        required
+        email
+      />
+      <mat-error *ngIf="emailInput.invalid"
+        >Please enter a vaild mail address.</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        type="password"
+        name="password"
+        ngModel
+        #passwordInput="ngModel"
+        matInput
+        placeholder="Passwod"
+        required
+      />
+      <mat-error *ngIf="passwordInput.invalid"
+        >Please enter vaild password.</mat-error
+      >
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Login</button>
+  </form>
+</mat-card>

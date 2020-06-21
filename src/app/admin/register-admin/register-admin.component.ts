@@ -1,16 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-register-admin',
+  templateUrl: './register-admin.component.html',
+  styleUrls: ['./register-admin.component.css'],
 })
-export class RegisterComponent implements OnInit {
-  imagePreview: any = '';
-  image: any;
-  constructor(private authSrv: AuthService) {}
+export class RegisterAdminComponent implements OnInit {
+  //imagePreview: any = '';
+  imagePreview: any = 'assets/imgs/default.jpg';
+
+  image: any = 'default.jpg';
+  constructor(private authSrv: AuthService) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     this.imagePreview = reader.result;
+    //   };
+    //   reader.readAsDataURL(this.image);
+  }
 
   ngOnInit(): void {}
   onSignupForm(form: NgForm) {
@@ -23,14 +31,17 @@ export class RegisterComponent implements OnInit {
       this.image,
       form.value.email,
       form.value.password,
-      'User'
+      'Admin'
     );
     console.log(form.value);
   }
 
   pickedImage(event: Event) {
+    //console.log(event);
+
     const file = (event.target as HTMLInputElement).files[0];
     //this.postForm.patchValue({ image: file });
+    console.log(file);
     //this.postForm.get("image").updateValueAndValidity();
     this.image = file;
     const reader = new FileReader();
