@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user")
+const itemRoutes = require("./routes/items")
 const app = express();
 
 mongoose.connect("mongodb+srv://Vishnu:VK6IUduF4NLcFezJ@mydb-fwqpd.mongodb.net/grocery")
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
 // app.use((req, res, next) => {
 //     res.end("hi this is text")
 // })
-
+app.use(itemRoutes)
 app.use("/api/user", userRoutes)
 
 module.exports = app;

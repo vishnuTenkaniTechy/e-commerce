@@ -11,6 +11,9 @@
             <button mat-stroked-button type="button" (click)="fileInput.click()">Pick profile image</button>
             <input type="file" #fileInput (change)="pickedImage($event)">
         </div>
+        <div class="image-preview">
+            <img [src]="imagePreview" />
+        </div>
         <mat-form-field>
             <input matInput name="email" ngModel type="E-mail" #emailInput="ngModel" placeholder="E-mail" required
                 email>

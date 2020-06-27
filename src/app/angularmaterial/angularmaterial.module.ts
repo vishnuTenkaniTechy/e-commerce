@@ -9,6 +9,9 @@ import {
   MatMenuModule,
   MatPaginatorModule,
   MatDialogModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -25,6 +28,9 @@ import {
     MatDialogModule,
     MatCardModule,
     MatPaginatorModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
 })
-export class AngularmaterialModule {}
+export class AngularmaterialModule { }

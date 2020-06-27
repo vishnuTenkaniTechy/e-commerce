@@ -3,13 +3,18 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user")
 
 exports.createUser = (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host");
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+        const url = req.protocol + '://' + req.get("host");
+        imagePath = url + '/images/' + req.file.filename
+    }
+    //const url = req.protocol + '://' + req.get("host");
     bycrpt.hash(req.body.password, 8).then((hash) => {
         //console.log(hash)
 
         const user = new User({
             userName: req.body.userName,
-            profileImg: url + '/images/' + req.file.filename,
+            profileImg: imagePath,
             email: req.body.email,
             role: req.body.role,
             password: hash

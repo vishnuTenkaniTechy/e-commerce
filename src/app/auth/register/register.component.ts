@@ -8,11 +8,12 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  imagePreview: any = '';
-  image: any;
-  constructor(private authSrv: AuthService) {}
+  imagePreview: any = 'assets/imgs/default.jpg';
 
-  ngOnInit(): void {}
+  image: any;
+  constructor(private authSrv: AuthService) { }
+
+  ngOnInit(): void { }
   onSignupForm(form: NgForm) {
     if (form.invalid) {
       return;

@@ -7,16 +7,22 @@ import { RegisterComponent } from './auth/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularmaterialModule } from './angularmaterial/angularmaterial.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterAdminComponent } from './admin/register-admin/register-admin.component';
+import { AddItemComponent } from './item/add-item/add-item.component';
+import { HeaderComponent } from './header/header.component';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    RegisterAdminComponent
+    RegisterAdminComponent,
+    AddItemComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +33,9 @@ import { RegisterAdminComponent } from './admin/register-admin/register-admin.co
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true, }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
