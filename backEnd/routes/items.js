@@ -6,7 +6,7 @@ const checkAuth = require("../middleware/check-auth")
 const itemController = require("../controller/items")
 const fileUpload = require("../middleware/file")
 
-router.get("/api/item", checkAuth, itemController.getAllItems);
+router.get("/api/item", itemController.getAllItems);
 
 router.post("/api/item", checkAuth, fileUpload, itemController.addItems);
 

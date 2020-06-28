@@ -14,6 +14,7 @@ import { AddItemComponent } from './item/add-item/add-item.component';
 import { HeaderComponent } from './header/header.component';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     LoginComponent,
     RegisterAdminComponent,
     AddItemComponent,
-    HeaderComponent
+    HeaderComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

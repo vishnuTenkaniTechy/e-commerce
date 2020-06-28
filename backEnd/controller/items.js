@@ -10,11 +10,12 @@ exports.addItems = ((req, res, next) => {
         const url = req.protocol + '://' + req.get("host");
         const item = new Items({
             itemName: req.body.itemName,
-            itemImg: url + '/images' + req.file.filename,
+            itemImg: url + '/images/' + req.file.filename,
             itemPrice: req.body.itemPrice,
             itemDesc: req.body.itemDesc,
             itemAval: req.body.itemAval,
-            itemCate: req.body.itemCate
+            itemCate: req.body.itemCate,
+            itemQuantity: req.body.itemQuantity
         })
         item.save().then((itemCreated) => {
             res.status(201).json({

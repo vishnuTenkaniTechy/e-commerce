@@ -9,7 +9,9 @@ const itemsSchema = mongose.Schema({
     itemPrice: { type: Number, required: true, },
     itemDesc: { type: String, required: true },
     itemAval: { type: Boolean, required: true },
-    itemCate: { type: String, required: true }
+    itemCate: { type: String, required: true },
+    itemQuantity: { type: String, required: true },
+
 
 })
 
