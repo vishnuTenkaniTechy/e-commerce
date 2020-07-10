@@ -21,19 +21,25 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   items: any[] = [];
   itemFilter: any[] = [];
   userDetails: any = null;
+  iteml: any;
   private itemsSub: Subscription;
+  tempItem: any[] = [];
   constructor(
     private itemSrv: ItemsService,
     private authSrv: AuthService,
     private cdr: ChangeDetectorRef
   ) {
+    this.iteml = this.itemSrv.getOrderFromItems();
+    console.log('cartItems', this.iteml);
+
     this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
     this.itemsSub = this.itemSrv.getPostUpdateListener().subscribe(
       (postsData: any) => {
         //  this.isLoading = false;
         this.totalPosts = postsData.maxPostCout;
         this.items = postsData.items;
-        console.log(postsData);
+
+        console.log(this.items);
         this.itemFilter = this.items;
       },
       (err) => {
@@ -44,15 +50,67 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked() {
     this.userDetails = this.authSrv.getUserDetails();
     this.cdr.detectChanges();
-    console.log(this.userDetails);
+    //console.log(this.userDetails);
   }
 
   filterItems(value: string) {
     if (value != '') {
       this.items = this.itemFilter.filter((item) => item.itemCate == value);
     }
-    console.log(this.items);
+    //console.log(this.items);
+  }
+  addToCart(item) {
+    //item.itemCartStatus = true
+    console.log(item);
+    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemPrice).subscribe((resCart: any) => {
+      console.log(resCart);
+      this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+    }, err => {
+      console.log(err);
+
+    })
+    // let temp = this.tempItem.findIndex((i) => i.id == item.id)
+
+    // if (temp == -1) {
+    //   this.tempItem.push(item)
+    // }
+
+    //console.log('temp', this.tempItem, temp);
+    ///this.itemSrv.storeItemToOrder(this.tempItem);
   }
 
-  ngOnInit(): void {}
+  increament(item) {
+    item.itemTotal += item.itemPrice;
+    item.itemNumber += 1;
+    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal).subscribe((resCart: any) => {
+      console.log(resCart);
+      this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+    }, err => {
+      console.log(err);
+
+    })
+
+    //console.log('total', item.itemTotal);
+    //this.itemSrv.storeItemToOrder(item);
+
+  }
+  decreament(item) {
+    if (item.itemTotal > item.itemPrice) {
+      item.itemTotal -= item.itemPrice;
+      item.itemNumber -= 1;
+      this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal).subscribe((resCart: any) => {
+        console.log(resCart);
+        this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+      }, err => {
+        console.log(err);
+
+      })
+      //this.itemSrv.storeItemToOrder(item);
+    } else {
+      item.itemCartStatus = false;
+    }
+
+  }
+
+  ngOnInit(): void { }
 }

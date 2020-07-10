@@ -46,7 +46,27 @@ footer p {
 .truncate {
   width: 100%;
   height: 10vh;
-  overflow: hidden;
+  overflow-y: scroll;
   white-space: break-spaces;
   text-overflow: ellipsis;
+  padding: 1rem;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

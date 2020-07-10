@@ -15,7 +15,8 @@ exports.addItems = ((req, res, next) => {
             itemDesc: req.body.itemDesc,
             itemAval: req.body.itemAval,
             itemCate: req.body.itemCate,
-            itemQuantity: req.body.itemQuantity
+            itemQuantity: req.body.itemQuantity,
+            itemTotal: req.body.itemTotal
         })
         item.save().then((itemCreated) => {
             res.status(201).json({
@@ -48,7 +49,10 @@ exports.updateItem = ((req, res, next) => {
         itemPrice: req.body.itemPrice,
         itemDesc: req.body.itemDesc,
         itemAval: req.body.itemAval,
-        itemCate: req.body.itemCate
+        itemCate: req.body.itemCate,
+        itemQuantity: req.body.itemQuantity,
+        itemNumber: req.body.itemNumber,
+        itemTotal: req.body.itemTotal
     })
     Items.updateOne({ _id: req.params.id }, item).then(() => {
         res.status(200).json({
@@ -92,3 +96,85 @@ exports.getAllItems = (req, res, next) => {
         });
     });
 }
+
+exports.increament = ((req, res, next) => {
+    Items.findOne({ _id: req.body.id }, (err, item) => {
+        if (!item) {
+            console.log(item);
+            res.status(201).json({ message: "faild to find item id" })
+        } else {
+            user.findOne({ _id: req.userData.userId }, (err, finduser) => {
+                if (item.itemUser.includes(finduser._id)) {
+                    const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
+                    item.itemUser.splice(arrayIndex, 1); // Remove user from array
+                    item.itemNumber = req.body.itemNumber;// Increment likes
+                    //item.itemCart = true;
+                    item.itemTotal = req.body.itemTotal;
+                    item.itemUser.push(finduser._id); // Add username to the array of likedBy array
+                    // Save blog post data
+                    item.save((err) => {
+                        // Check if error was found
+                        if (err) {
+                            res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                        } else {
+                            res.json({ success: true, message: 'item addedtocart' }); // Return success message
+                        }
+                    });
+
+                } else {
+                    //item.itemNumber++;
+                    //console.log(item);
+
+                    item.itemNumber = req.body.itemNumber;// Increment likes
+                    item.itemTotal = req.body.itemTotal;
+                    //item.itemCart = req.body.itemCart;
+                    item.itemUser.push(finduser._id);
+                    item.save((err) => {
+                        console.log(err);
+
+                        if (err) {
+                            res.status(201).json({ message: "add to cart failed" })
+                        } else {
+                            res.status(200).json({ message: "add to cart successFully" })
+
+                        }
+                    });
+
+                }
+            })
+
+        }
+
+    })
+})
+
+exports.decreament = ((req, res, next) => {
+    Items.findOne({ _id: req.body.id }, (err, item) => {
+        if (!item) {
+            res.status(201).json({ message: "faild to find id" })
+        } else {
+            user.findOne({ _id: req.userData.userId }, (err, finduser) => {
+                //if (finduser._id === req.userData.userId) {
+                item.itemNumber = req.body.itemNumber;
+                item.itemTotal = req.body.itemTotal;
+                if (item.itemNumber < 2) {
+                    item.itemNumber = req.body.itemNumber;
+                    item.itemTotal = req.body.itemTotal;
+                    const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
+                    item.itemUser.splice(arrayIndex, 1);
+
+
+                }
+                item.save((err) => {
+                    if (!err) {
+                        res.status(200).json({ message: 'removed item cart' })
+                    } else {
+                        res.status(201).json({ message: 'removed item cart failed' })
+                    }
+                })
+                //}
+
+            })
+        }
+    })
+})

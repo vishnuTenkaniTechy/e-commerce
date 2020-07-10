@@ -14,7 +14,7 @@ export class AddItemComponent implements OnInit {
   itemsForm: FormGroup;
   selected = '';
   itemAval: boolean = false;
-  constructor(private itemSrv: ItemsService) {}
+  constructor(private itemSrv: ItemsService) { }
 
   ngOnInit(): void {
     this.itemsForm = new FormGroup({

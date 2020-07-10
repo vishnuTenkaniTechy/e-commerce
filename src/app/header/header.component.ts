@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, AfterViewChecked {
   private authListnerSubs: Subscription;
   isUserAuthenticated = false;
   userDetails: any = null;
-  constructor(private auth: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private auth: AuthService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.isUserAuthenticated = this.auth.getAuth();
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked() {
     this.userDetails = this.auth.getUserDetails();
     this.cdr.detectChanges();
-    console.log(this.userDetails);
+    //console.log(this.userDetails);
   }
   onLogout() {
     this.auth.logOut();

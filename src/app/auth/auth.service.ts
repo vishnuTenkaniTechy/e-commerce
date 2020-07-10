@@ -16,7 +16,7 @@ export class AuthService {
   //private userName: string;
   private userDetails: any;
   private authListner = new Subject<boolean>();
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   register(
     userName: string,
@@ -46,7 +46,7 @@ export class AuthService {
     this.http
       .post('http://localhost:3000/api/user/register', userData)
       .subscribe((response) => {
-        console.log(response);
+        //console.log(response);
         this.router.navigate(['/login']);
       });
   }
@@ -63,7 +63,7 @@ export class AuthService {
         userDetails: any;
       }>('http://localhost:3000/api/user/login', authData)
       .subscribe((Response) => {
-        console.log(Response);
+        //console.log(Response);
         const token = Response.token;
         const expiresIntimer = Response.expiresIn;
         this.userId = Response.userId;
@@ -117,7 +117,7 @@ export class AuthService {
   getUserDetails() {
     //console.log(this.userDetails);
     const authData = this.getAuthData();
-    console.log('VV', authData);
+    //console.log('VV', authData);
 
     if (!authData) {
       return;

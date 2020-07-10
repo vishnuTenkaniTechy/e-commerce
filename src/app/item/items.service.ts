@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵɵstylePropInterpolateV } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ItemsService {
-  constructor(private http: HttpClient, private route: Router) {}
+  constructor(private http: HttpClient, private route: Router) { }
   private items: any[] = [];
   private itemsUpdated = new Subject<{ items: any[]; maxPostCout: number }>();
   addItem(
@@ -27,6 +27,7 @@ export class ItemsService {
     itemData.append('itemAval', itemAval);
     itemData.append('itemCate', itemCate);
     itemData.append('itemQuantity', itemQun);
+    itemData.append('itemTotal', itemPrice);
     this.http
       .post('http://localhost:3000/api/item', itemData)
       .subscribe((response) => {
@@ -54,6 +55,10 @@ export class ItemsService {
                 itemQuantity: p.itemQuantity,
                 itemCate: p.itemCate,
                 itemAval: p.itemAval,
+                itemNumber: p.itemNumber,
+                itemTotal: p.itemTotal,
+                itemCart: p.itemCart,
+                itemUser: p.itemUser
               };
             }),
             maxPosts: postData.maxPosts,
@@ -75,4 +80,33 @@ export class ItemsService {
   getPostUpdateListener() {
     return this.itemsUpdated.asObservable();
   }
+
+
+  storeItemToOrder(item: any) {
+
+    var tempItem = JSON.parse(localStorage.getItem("items"));
+    if (tempItem == null) tempItem = [];
+    localStorage.setItem("item", JSON.stringify(item));
+    tempItem.push(item);
+    localStorage.setItem("items", JSON.stringify(tempItem));
+
+  }
+  iteml: any;
+  getOrderFromItems() {
+    return this.iteml = JSON.parse(localStorage.getItem("items"));
+  }
+  addtoCart(id: string, itemNumber: number, itemTotal: number) {
+
+    //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
+    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: true };
+    return this.http.put("http://localhost:3000/api/increament/", postId);
+  }
+
+  removetoCart(id: string, itemNumber: number, itemTotal: number) {
+
+    //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
+    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal };
+    return this.http.put("http://localhost:3000/api/decreament/", postId);
+  }
+
 }
