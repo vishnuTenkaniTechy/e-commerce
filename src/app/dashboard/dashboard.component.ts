@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked() {
     this.userDetails = this.authSrv.getUserDetails();
     this.cdr.detectChanges();
-    //console.log(this.userDetails);
+    console.log(this.userDetails);
   }
 
   filterItems(value: string) {
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   addToCart(item) {
     //item.itemCartStatus = true
     console.log(item);
-    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemPrice).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item.id, 1, item.itemPrice, true).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
     }, err => {
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   increament(item) {
     item.itemTotal += item.itemPrice;
     item.itemNumber += 1;
-    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
     }, err => {
@@ -95,16 +95,28 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
   }
   decreament(item) {
-    if (item.itemTotal > item.itemPrice) {
+    if (item.itemNumber === 1 || item.itemNumber > 1) {
       item.itemTotal -= item.itemPrice;
-      item.itemNumber -= 1;
-      this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal).subscribe((resCart: any) => {
-        console.log(resCart);
-        this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
-      }, err => {
-        console.log(err);
+      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
+      if (item.itemNumber !== 1) {
+        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
+          console.log(resCart);
+          this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+        }, err => {
+          console.log(err);
 
-      })
+        })
+      } else {
+        item.itemPrice;
+        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemPrice, false).subscribe((resCart: any) => {
+          console.log(resCart);
+          this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+        }, err => {
+          console.log(err);
+
+        })
+      }
+
       //this.itemSrv.storeItemToOrder(item);
     } else {
       item.itemCartStatus = false;

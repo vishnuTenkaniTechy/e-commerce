@@ -1,29 +1,29 @@
 <mat-toolbar color="primary">
-  <span
-    ><a routerLink="" style="text-transform: capitalizes;">Grocery </a></span
-  >
+  <span><a routerLink="" style="text-transform: capitalizes;">Grocery </a></span>
   <span class="spacer"></span>
   <ul>
     <div *ngIf="userDetails != null">
       <li *ngIf="isUserAuthenticated && userDetails.role == 'Admin'">
-        <a mat-button routerLink="addItem" routerLinkActive="mat-accent"
-          >AddItem</a
-        >
+        <a mat-button routerLink="addItem" routerLinkActive="mat-accent">AddItem</a>
       </li>
     </div>
     <li *ngIf="!isUserAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
     </li>
     <li *ngIf="!isUserAuthenticated">
-      <a mat-button routerLink="/register" routerLinkActive="mat-accent"
-        >Signup</a
-      >
+      <a mat-button routerLink="/register" routerLinkActive="mat-accent">Signup</a>
     </li>
     <li *ngIf="isUserAuthenticated">
       <div></div>
-      <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent"
-        >Cart</a
-      >
+      <!-- <a mat-button routerLink="/cart" routerLinkActive="mat-accent">Cart</a> -->
+      <!-- <a matBadge="4" matBadge="8" matBadgeColor="warn" routerLink="/cart" routerLinkActive="mat-accent">Cart</a> -->
+      <p>
+        <button mat-button matBadge="{{items.length != 0 ? items.length : ''}}" matBadgePosition="before"
+          matBadgeColor="accent" routerLink="/cart" routerLinkActive="mat-accent">
+          Cart
+        </button>
+      </p>
+
     </li>
     <li *ngIf="isUserAuthenticated">
       <button mat-button (click)="onLogout()">Logout</button>

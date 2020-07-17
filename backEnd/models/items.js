@@ -14,7 +14,7 @@ const itemsSchema = mongose.Schema({
     itemUser: { type: Array },
     itemNumber: { type: Number, default: 1 },
     itemTotal: { type: Number, default: 0 },
-    itemCart: { Boolean: false }
+    itemCart: { type: Boolean, default: false }
 
 
 })

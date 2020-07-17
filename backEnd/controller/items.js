@@ -108,7 +108,7 @@ exports.increament = ((req, res, next) => {
                     const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
                     item.itemUser.splice(arrayIndex, 1); // Remove user from array
                     item.itemNumber = req.body.itemNumber;// Increment likes
-                    //item.itemCart = true;
+                    item.itemCart = req.body.itemCart;
                     item.itemTotal = req.body.itemTotal;
                     item.itemUser.push(finduser._id); // Add username to the array of likedBy array
                     // Save blog post data
@@ -127,7 +127,7 @@ exports.increament = ((req, res, next) => {
 
                     item.itemNumber = req.body.itemNumber;// Increment likes
                     item.itemTotal = req.body.itemTotal;
-                    //item.itemCart = req.body.itemCart;
+                    item.itemCart = req.body.itemCart;
                     item.itemUser.push(finduser._id);
                     item.save((err) => {
                         console.log(err);
@@ -160,6 +160,7 @@ exports.decreament = ((req, res, next) => {
                 if (item.itemNumber < 2) {
                     item.itemNumber = req.body.itemNumber;
                     item.itemTotal = req.body.itemTotal;
+                    item.itemCart = req.body.itemCart;
                     const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
                     item.itemUser.splice(arrayIndex, 1);
 

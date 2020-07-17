@@ -69,7 +69,9 @@
               </div>
             </div>
             <div class="col-2 col-sm-6">
-              <span *ngIf="userDetails?.role == 'user' && item?.itemUser.indexOf(userDetails?._id) > -1"><b>Number of
+              <span
+                *ngIf="userDetails?.role == 'user' && item?.itemUser.indexOf(userDetails?._id) > -1 && item?.itemTotal != 0"><b>Number
+                  of
                   {{item.itemName}}</b>{{item.itemNumber}}
                 <b>Total Price</b>{{item.itemTotal}}</span>
             </div>
@@ -78,6 +80,14 @@
                 (click)="decreament(item)">
                 <i class="fa fa-minus-square-o" aria-hidden="true"></i>
               </div>
+            </div>
+
+            <div class="col-8 col-sm-8">
+              <button type="button" class="btn btn-outline-primary"
+                *ngIf="userDetails?.role == 'user' && (item?.itemUser.indexOf(userDetails?._id) > -1)"
+                routerLink="/cart">
+                Go to Cart
+              </button>
             </div>
             <div class="col-12 col-sm-12">
               <button type="button" class="btn btn-outline-primary"

@@ -5,6 +5,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { RegisterAdminComponent } from './admin/register-admin/register-admin.component';
 import { AddItemComponent } from './item/add-item/add-item.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CartComponent } from './item/cart/cart.component';
 //import { RegisterComponentAdmin } from './admin/register/register.component';
 
 const routes: Routes = [
@@ -13,10 +14,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'adminRegister', component: RegisterAdminComponent },
   { path: 'addItem', component: AddItemComponent },
+  { path: 'cart', component: CartComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

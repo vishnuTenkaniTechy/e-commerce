@@ -95,17 +95,17 @@ export class ItemsService {
   getOrderFromItems() {
     return this.iteml = JSON.parse(localStorage.getItem("items"));
   }
-  addtoCart(id: string, itemNumber: number, itemTotal: number) {
+  addtoCart(id: string, itemNumber: number, itemTotal: number, itemCart: boolean) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
-    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: true };
+    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: itemCart };
     return this.http.put("http://localhost:3000/api/increament/", postId);
   }
 
-  removetoCart(id: string, itemNumber: number, itemTotal: number) {
+  removetoCart(id: string, itemNumber: number, itemTotal: number, itemCart: boolean) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
-    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal };
+    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: itemCart };
     return this.http.put("http://localhost:3000/api/decreament/", postId);
   }
 
