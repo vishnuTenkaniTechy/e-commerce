@@ -11,7 +11,7 @@ router.get("/api/item", itemController.getAllItems);
 router.post("/api/item", checkAuth, fileUpload, itemController.addItems);
 
 router.put("/api/item/:id", checkAuth, fileUpload, itemController.updateItem);
-
+router.get("/api/item/:id", itemController.getItemById);
 router.delete("/api/item/:id", checkAuth, itemController.deleteItem);
 router.put("/api/increament/", checkAuth, itemController.increament);
 router.put("/api/decreament/", checkAuth, itemController.decreament);

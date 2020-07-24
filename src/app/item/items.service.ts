@@ -80,7 +80,13 @@ export class ItemsService {
   getPostUpdateListener() {
     return this.itemsUpdated.asObservable();
   }
+  getViewItemViewById(id: string) {
+    let itemId = { id: id }
+    return this.http.get<{
+      _id: string;
 
+    }>('http://localhost:3000/api/item/' + id)
+  }
 
   storeItemToOrder(item: any) {
 

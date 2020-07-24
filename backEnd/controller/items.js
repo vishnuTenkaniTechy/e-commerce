@@ -148,6 +148,16 @@ exports.increament = ((req, res, next) => {
     })
 })
 
+exports.getItemById = ((req, res, next) => {
+    Items.findById(req.params.id).then((fectchItem) => {
+        if (fectchItem) {
+            res.status(200).json(fectchItem);
+        } else {
+            res.status(404).json({ message: "item not found!" });
+        }
+    })
+})
+
 exports.decreament = ((req, res, next) => {
     Items.findOne({ _id: req.body.id }, (err, item) => {
         if (!item) {
@@ -162,6 +172,7 @@ exports.decreament = ((req, res, next) => {
                     item.itemTotal = req.body.itemTotal;
                     item.itemCart = req.body.itemCart;
                     const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
+
                     item.itemUser.splice(arrayIndex, 1);
 
 

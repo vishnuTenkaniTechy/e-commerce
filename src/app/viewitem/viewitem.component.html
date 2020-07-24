@@ -1,0 +1,48 @@
+<div class="container-fluid" style="padding: 2rem;">
+    <div class="row" *ngIf="viewItem != null">
+        <div class="col col-md-6"><img src="{{viewItem.itemImg}}" style="width: 100%;"></div>
+        <div class="col col-md-6">
+            <h2>Item Name : {{viewItem.itemName}}</h2>
+            <h4>Item Category : {{viewItem.itemCate}}</h4>
+            <p>
+                <b>Item Description : </b> {{viewItem.itemDesc}}
+            </p>
+            <p><b>Item Price : </b>{{viewItem.itemPrice}}</p>
+            <div class="card-block row" style="text-align: center;padding: 1rem;">
+                <div class="col-2 col-sm-1">
+                    <div *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1"
+                        (click)="increament(viewItem)">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="col-2 col-sm-6">
+                    <span
+                        *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1 && viewItem?.itemTotal != 0"><b>Number
+                            of
+                            {{viewItem.itemName}}</b> {{viewItem.itemNumber}}
+                        <b>Total Price</b> {{viewItem.itemTotal}}</span>
+                </div>
+                <div class="col-2 col-sm-1">
+                    <div *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1 "
+                        (click)="decreament(viewItem)">
+                        <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-8">
+                    <button type="button" class="btn btn-outline-primary"
+                        *ngIf="userDetails?.role == 'user' && (viewItem?.itemUser?.indexOf(userDetails?._id) > -1)"
+                        routerLink="/cart">
+                        Go to Cart
+                    </button>
+                </div>
+                <div class="col-12 col-sm-12">
+                    <button type="button" class="btn btn-outline-primary"
+                        *ngIf="userDetails?.role == 'user' && !(viewItem?.itemUser?.indexOf(userDetails?._id) > -1)"
+                        (click)="addToCart(viewItem)">
+                        Add to your Basket
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,72 +1,46 @@
-import {
-  Component,
-  OnInit,
-  AfterViewChecked,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ItemsService } from '../item/items.service';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: 'app-viewitem',
+  templateUrl: './viewitem.component.html',
+  styleUrls: ['./viewitem.component.css']
 })
-export class DashboardComponent implements OnInit, AfterViewChecked {
-  totalPosts = 0;
-  postPerPage = 6;
-  currentPage = 1;
-  pageSizeOptions = [1, 2, 5, 10];
-  items: any[] = [];
-  itemFilter: any[] = [];
-  userDetails: any = null;
-  iteml: any;
-  private itemsSub: Subscription;
-  tempItem: any[] = [];
-  constructor(
-    private itemSrv: ItemsService,
+export class ViewitemComponent implements OnInit {
+
+  constructor(private route: ActivatedRoute, private itemSrv: ItemsService,
     private authSrv: AuthService,
-    private cdr: ChangeDetectorRef,
-    private router: Router,
-  ) {
-    this.iteml = this.itemSrv.getOrderFromItems();
-    console.log('cartItems', this.iteml);
+    private cdr: ChangeDetectorRef, ) { }
+  viewItem: any = [];
+  userDetails: any = []
+  id: any;
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get('id')
+      this.itemSrv.getViewItemViewById(params.get('id')).subscribe((item => {
+        this.viewItem = item;
+        ///console.log('vv', item);
 
-    this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
-    this.itemsSub = this.itemSrv.getPostUpdateListener().subscribe(
-      (postsData: any) => {
-        //  this.isLoading = false;
-        this.totalPosts = postsData.maxPostCout;
-        this.items = postsData.items;
-
-        console.log(this.items);
-        this.itemFilter = this.items;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      }))
+    });
   }
   ngAfterViewChecked() {
     this.userDetails = this.authSrv.getUserDetails();
     this.cdr.detectChanges();
     // console.log(this.userDetails);
   }
-
-  filterItems(value: string) {
-    if (value != '') {
-      this.items = this.itemFilter.filter((item) => item.itemCate == value);
-    }
-    //console.log(this.items);
-  }
   addToCart(item) {
     //item.itemCartStatus = true
     console.log(item);
     this.itemSrv.addtoCart(item.id, 1, item.itemPrice, true).subscribe((resCart: any) => {
       console.log(resCart);
-      this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+      this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
+        this.viewItem = item;
+        ///console.log('vv', item);
+
+      }))
     }, err => {
       console.log(err);
 
@@ -87,7 +61,11 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     item.itemNumber += 1;
     this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
       console.log(resCart);
-      this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+      this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
+        this.viewItem = item;
+        ///console.log('vv', item);
+
+      }))
     }, err => {
       console.log(err);
 
@@ -104,7 +82,11 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
       if (item.itemNumber !== 1) {
         this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
           console.log(resCart);
-          this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+          this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
+            this.viewItem = item;
+            ///console.log('vv', item);
+
+          }))
         }, err => {
           console.log(err);
 
@@ -113,7 +95,12 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         item.itemPrice;
         this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemPrice, false).subscribe((resCart: any) => {
           console.log(resCart);
-          this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+          //this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+          this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
+            this.viewItem = item;
+            ///console.log('vv', item);
+
+          }))
         }, err => {
           console.log(err);
 
@@ -127,5 +114,4 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
   }
 
-  ngOnInit(): void { }
 }

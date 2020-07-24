@@ -37,8 +37,9 @@ export class HeaderComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
     this.userDetails = this.auth.getUserDetails();
+    //this.getCartItem();
     this.cdr.detectChanges();
-    this.getCartItem();
+
     //console.log(this.userDetails);
   }
   onLogout() {

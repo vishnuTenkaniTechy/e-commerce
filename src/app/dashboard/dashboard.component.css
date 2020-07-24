@@ -44,11 +44,12 @@ footer p {
   height: 50vh !important;
 }
 .truncate {
-  width: 100%;
-  height: 10vh;
-  overflow-y: scroll;
-  white-space: break-spaces;
+  width: 35rem;
+  
+  
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 1rem;
 }
 /* width */
