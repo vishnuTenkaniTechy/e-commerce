@@ -3,7 +3,7 @@
         <div class="col col-md-6"><img src="{{viewItem.itemImg}}" style="width: 100%;"></div>
         <div class="col col-md-6">
             <h2>Item Name : {{viewItem.itemName}}</h2>
-            <h4>Item Category : {{viewItem.itemCate}}</h4>
+            <h4><b>Item Category :</b> {{viewItem.itemCate}}</h4>
             <p>
                 <b>Item Description : </b> {{viewItem.itemDesc}}
             </p>
@@ -41,6 +41,12 @@
                         *ngIf="userDetails?.role == 'user' && !(viewItem?.itemUser?.indexOf(userDetails?._id) > -1)"
                         (click)="addToCart(viewItem)">
                         Add to your Basket
+                    </button>
+                </div>
+                <div class="col-12 col-sm-12">
+                    <button type="button" routerLink="/login" class="btn btn-outline-primary"
+                        *ngIf="userDetails?.role == undefined">
+                        Please login
                     </button>
                 </div>
             </div>

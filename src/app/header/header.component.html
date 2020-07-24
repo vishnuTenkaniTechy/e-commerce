@@ -15,14 +15,14 @@
     </li>
     <li *ngIf="isUserAuthenticated">
       <div></div>
-      <!-- <a mat-button routerLink="/cart" routerLinkActive="mat-accent">Cart</a> -->
+      <a mat-button routerLink="/cart" routerLinkActive="mat-accent">Cart</a>
       <!-- <a matBadge="4" matBadge="8" matBadgeColor="warn" routerLink="/cart" routerLinkActive="mat-accent">Cart</a> -->
-      <p>
-        <button mat-button matBadge="{{items.length != 0 ? items.length : ''}}" matBadgePosition="before"
+      <!-- <p>
+        <a mat-button matBadge="{{items.length != 0 ? items.length : ''}}" matBadgePosition="before"
           matBadgeColor="accent" routerLink="/cart" routerLinkActive="mat-accent">
           Cart
         </button>
-      </p>
+      </p> -->
 
     </li>
     <li *ngIf="isUserAuthenticated">

@@ -34,7 +34,7 @@ export class ViewitemComponent implements OnInit {
   addToCart(item) {
     //item.itemCartStatus = true
     console.log(item);
-    this.itemSrv.addtoCart(item.id, 1, item.itemPrice, true).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item._id, 1, item.itemPrice, true).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
         this.viewItem = item;
@@ -59,7 +59,7 @@ export class ViewitemComponent implements OnInit {
   increament(item) {
     item.itemTotal += item.itemPrice;
     item.itemNumber += 1;
-    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item._id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
         this.viewItem = item;
@@ -80,7 +80,7 @@ export class ViewitemComponent implements OnInit {
       item.itemTotal -= item.itemPrice;
       item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
       if (item.itemNumber !== 1) {
-        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
+        this.itemSrv.removetoCart(item._id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
           console.log(resCart);
           this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
             this.viewItem = item;
