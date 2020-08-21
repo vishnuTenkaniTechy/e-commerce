@@ -34,7 +34,7 @@ export class ViewitemComponent implements OnInit {
   addToCart(item) {
     //item.itemCartStatus = true
     console.log(item);
-    this.itemSrv.addtoCart(item._id, 1, item.itemPrice, true).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item._id).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
         this.viewItem = item;
@@ -59,7 +59,7 @@ export class ViewitemComponent implements OnInit {
   increament(item) {
     item.itemTotal += item.itemPrice;
     item.itemNumber += 1;
-    this.itemSrv.addtoCart(item._id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
+    this.itemSrv.addtoCart(item._id).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
         this.viewItem = item;
@@ -76,26 +76,17 @@ export class ViewitemComponent implements OnInit {
 
   }
   decreament(item) {
+    item.itemNumber == 1 ? item.itemNumber -= 1 : item.itemNumber
     if (item.itemNumber === 1 || item.itemNumber > 1) {
-      item.itemTotal -= item.itemPrice;
-      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
-      if (item.itemNumber !== 1) {
-        this.itemSrv.removetoCart(item._id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
-          console.log(resCart);
-          this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
-            this.viewItem = item;
-            ///console.log('vv', item);
-
-          }))
-        }, err => {
-          console.log(err);
-
-        })
+      if (item.itemNumber == 1) {
+        item.itemTotal = item.itemPrice
       } else {
-        item.itemPrice;
-        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemPrice, false).subscribe((resCart: any) => {
+        item.itemTotal -= item.itemPrice;
+      }
+      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
+      if (item.itemNumber != 0) {
+        this.itemSrv.removetoCart(item._id).subscribe((resCart: any) => {
           console.log(resCart);
-          //this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
           this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
             this.viewItem = item;
             ///console.log('vv', item);
@@ -106,10 +97,24 @@ export class ViewitemComponent implements OnInit {
 
         })
       }
+      item.itemPrice;
+
 
       //this.itemSrv.storeItemToOrder(item);
     } else {
-      item.itemCartStatus = false;
+      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
+      this.itemSrv.removetoCart(item._id).subscribe((resCart: any) => {
+        console.log(resCart);
+        this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
+          this.viewItem = item;
+          ///console.log('vv', item);
+
+        }))
+      }, err => {
+        console.log(err);
+
+      })
+
     }
 
   }

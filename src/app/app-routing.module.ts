@@ -7,6 +7,7 @@ import { AddItemComponent } from './item/add-item/add-item.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CartComponent } from './item/cart/cart.component';
 import { ViewitemComponent } from './viewitem/viewitem.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 //import { RegisterComponentAdmin } from './admin/register/register.component';
 
 const routes: Routes = [
@@ -17,6 +18,8 @@ const routes: Routes = [
   { path: 'addItem', component: AddItemComponent },
   { path: 'cart', component: CartComponent },
   { path: 'cartview/:id', component: ViewitemComponent },
+  { path: 'checkout', component: CheckoutComponent },
+  { path: "edit/:itemId", component: AddItemComponent }
 
 ];
 

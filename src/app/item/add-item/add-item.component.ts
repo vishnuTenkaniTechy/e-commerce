@@ -4,6 +4,7 @@ import { ItemsService } from '../items.service';
 import { mimeType } from '../validators/mime-type.validators';
 import { from } from 'rxjs';
 import { MatCheckbox } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-item',
@@ -14,7 +15,8 @@ export class AddItemComponent implements OnInit {
   itemsForm: FormGroup;
   selected = '';
   itemAval: boolean = false;
-  constructor(private itemSrv: ItemsService) { }
+  itemArray: any = [];
+  constructor(private itemSrv: ItemsService, private route: ActivatedRoute, ) { }
 
   ngOnInit(): void {
     this.itemsForm = new FormGroup({
@@ -22,13 +24,29 @@ export class AddItemComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)],
       }),
       itemPrice: new FormControl(null, { validators: [Validators.required] }),
-      itemImage: new FormControl(null, { validators: [Validators.required] }),
+      itemImage: new FormControl(null, { validators: [Validators.required], asyncValidators: mimeType, }),
       itemDesc: new FormControl(null, { validators: [Validators.required] }),
       itemQuan: new FormControl(null, { validators: [Validators.required] }),
       itemCategory: new FormControl(null, {
-        validators: [Validators.required],
-        asyncValidators: mimeType,
+        validators: [Validators.required]
       }),
+    });
+    this.route.paramMap.subscribe(params => {
+      //this.id = params.get('id')
+      this.itemSrv.getViewItemViewById(params.get('itemId')).subscribe((item => {
+        this.itemArray = item;
+        //console.log('vv', this.itemArray);
+        this.itemsForm.setValue({
+          itemName: this.itemArray.itemName,
+          itemPrice: this.itemArray.itemPrice,
+          itemQuan: this.itemArray.itemQuantity,
+          itemImage: this.itemArray.itemImg,
+          itemDesc: this.itemArray.itemDesc,
+          itemCategory: this.itemArray.itemCate
+        })
+        this.itemAval = this.itemArray.itemAval
+
+      }))
     });
   }
   pickedImage(event: Event) {
@@ -48,15 +66,28 @@ export class AddItemComponent implements OnInit {
     if (this.itemsForm.invalid) {
       return false;
     }
-    this.itemSrv.addItem(
-      this.itemsForm.value.itemName,
-      this.itemsForm.value.itemImage,
-      this.itemsForm.value.itemPrice,
-      this.itemsForm.value.itemDesc,
-      this.itemAval,
-      this.itemsForm.value.itemCategory,
-      this.itemsForm.value.itemQuan
-    );
+    if (this.itemArray.length == 0) {
+      this.itemSrv.addItem(
+        this.itemsForm.value.itemName,
+        this.itemsForm.value.itemImage,
+        this.itemsForm.value.itemPrice,
+        this.itemsForm.value.itemDesc,
+        this.itemAval,
+        this.itemsForm.value.itemCategory,
+        this.itemsForm.value.itemQuan
+      );
+    }
+    else {
+      this.itemSrv.updateItem(this.itemsForm.value.itemName,
+        this.itemsForm.value.itemImage,
+        this.itemsForm.value.itemPrice,
+        this.itemsForm.value.itemDesc,
+        this.itemAval,
+        this.itemsForm.value.itemCategory,
+        this.itemsForm.value.itemQuan,
+        this.itemArray._id)
+    }
+
     this.itemsForm.reset();
   }
 }

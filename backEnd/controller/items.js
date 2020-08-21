@@ -1,6 +1,6 @@
 const Items = require("../models/items");
 const user = require("../models/user")
-
+const cartItem = require('../models/cart')
 
 exports.addItems = ((req, res, next) => {
 
@@ -23,7 +23,7 @@ exports.addItems = ((req, res, next) => {
                 message: "item added successfully",
                 item: {
                     ...itemCreated,
-                    id: itemCreated._id
+                    id: itemCreated
                 }
 
             });
@@ -96,7 +96,86 @@ exports.getAllItems = (req, res, next) => {
         });
     });
 }
+exports.additemCart = ((req, res, next) => {
+    Items.findOne({ _id: req.body.id }, (err, item) => {
+        if (!item) {
+            res.status(201).json({ message: "failed to find item id" })
+        } else {
+            const itemCart = new cartItem({
+                itemName: req.body.itemName,
+                itemImg: req.body.itemImg,
+                itemPrice: req.body.itemPrice,
+                itemDesc: req.body.itemDesc,
+                itemNumber: req.body.itemNumber,
+                itemCate: req.body.itemCate,
+                itemQuantity: req.body.itemQuantity,
+                itemtotal: req.body.itemtotal,
+                itemCartUser: req.userData.userId,
+                itemCartItem: req.body.id
+            })
+            itemCart.save().then((CartItem) => {
+                res.status(201).json({
+                    message: "Cart added successfully",
+                    cart: {
+                        ...CartItem,
+                        id: cartItem._id,
+                        Cartcount: cartItem.length,
+                        userId: req.userData.userId
+                    }
 
+                });
+            }).catch((err) => {
+                ///sssssconsole.log(err);
+
+                return res.status(401).json({
+                    message: "Cart added failed"
+                })
+            })
+        }
+    })
+})
+exports.updateCart = ((req, res, next) => {
+    const itemCart = new cartItem({
+        _id: req.body.id,
+        itemName: req.body.itemName,
+        itemImg: req.body.itemImg,
+        itemPrice: req.body.itemPrice,
+        itemDesc: req.body.itemDesc,
+        itemNumber: req.body.itemNumber,
+        itemCate: req.body.itemCate,
+        itemQuantity: req.body.itemQuantity,
+        itemtotal: req.body.itemtotal,
+
+    })
+    cartItem.updateOne({ _id: req.params.id }, itemCart).then((updateCart) => {
+        res.status(200).json({
+            message: "updated item successfully",
+            test: updateCart
+        })
+    }).catch((err) => {
+        res.status(401).json({
+            message: "Something went wrong!"
+        })
+    })
+})
+exports.deleteCartItem = ((req, res, next) => {
+    cartItem.deleteOne({ _id: req.params.id }).then(result => {
+        //console.log(result);
+        res.status(200).json({ message: "item deleted!" });
+    }).catch((err) => {
+        res.status(401).json({ message: "Somethig went wrong!" });
+    });
+})
+
+exports.getCartItem = ((req, res, next) => {
+    cartItem.find().then(cartData => {
+        res.status(200).json({
+            message: 'Data Fetched Successfully',
+            test: cartData,
+            //userId: 
+        })
+    })
+})
 exports.increament = ((req, res, next) => {
     Items.findOne({ _id: req.body.id }, (err, item) => {
         if (!item) {
@@ -107,9 +186,9 @@ exports.increament = ((req, res, next) => {
                 if (item.itemUser.includes(finduser._id)) {
                     const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
                     item.itemUser.splice(arrayIndex, 1); // Remove user from array
-                    item.itemNumber = req.body.itemNumber;// Increment likes
-                    item.itemCart = req.body.itemCart;
-                    item.itemTotal = req.body.itemTotal;
+                    //1item.itemNumber = req.body.itemNumber;// Increment likes
+                    //item.itemCart = req.body.itemCart;
+                    //item.itemTotal = req.body.itemTotal;
                     item.itemUser.push(finduser._id); // Add username to the array of likedBy array
                     // Save blog post data
                     item.save((err) => {
@@ -125,9 +204,9 @@ exports.increament = ((req, res, next) => {
                     //item.itemNumber++;
                     //console.log(item);
 
-                    item.itemNumber = req.body.itemNumber;// Increment likes
-                    item.itemTotal = req.body.itemTotal;
-                    item.itemCart = req.body.itemCart;
+                    //item.itemNumber = req.body.itemNumber;// Increment likes
+                    //item.itemTotal = req.body.itemTotal;
+                    //item.itemCart = req.body.itemCart;
                     item.itemUser.push(finduser._id);
                     item.save((err) => {
                         console.log(err);
@@ -165,18 +244,16 @@ exports.decreament = ((req, res, next) => {
         } else {
             user.findOne({ _id: req.userData.userId }, (err, finduser) => {
                 //if (finduser._id === req.userData.userId) {
-                item.itemNumber = req.body.itemNumber;
-                item.itemTotal = req.body.itemTotal;
-                if (item.itemNumber < 2) {
-                    item.itemNumber = req.body.itemNumber;
-                    item.itemTotal = req.body.itemTotal;
-                    item.itemCart = req.body.itemCart;
-                    const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
 
-                    item.itemUser.splice(arrayIndex, 1);
+                //item.itemNumber = req.body.itemNumber;
+                //item.itemTotal = req.body.itemTotal;
+                //item.itemCart = req.body.itemCart;
+                const arrayIndex = item.itemUser.indexOf(finduser._id); // Get the index of the username in the array for removal
+
+                item.itemUser.splice(arrayIndex, 1);
 
 
-                }
+                //    }
                 item.save((err) => {
                     if (!err) {
                         res.status(200).json({ message: 'removed item cart' })
@@ -189,4 +266,35 @@ exports.decreament = ((req, res, next) => {
             })
         }
     })
+})
+
+exports.addTocart = ((req, res, next) => {
+    Items.findOne({ _id: req.body.id }), (err, item) => {
+        if (!item) {
+            res.status(201).json({ message: "faild to find" })
+        } else {
+            const cart = new cartItem({
+                itemName: req.body.itemName,
+                itemPrice: req.body.itemPrice,
+                itemImg: req.body.itemImg,
+                itemDesc: req.body.itemDesc,
+                itemNumber: req.body.itemNumber,
+                itemCate: req.body.itemCate,
+                itemQuantity: req.body.itemQuantity,
+                itemTotal: req.body.itemTotal,
+                itemCartUser: req.userData.id,
+                itemCartItem: item._id
+            })
+            cart.save().then((cartItem) => {
+                res.status(200).json({
+                    message: 'Cart Added',
+                    cartItem: {
+                        ...cartItem,
+                        cartId: cartItem._id,
+                        Cartcount: cartItem.length
+                    }
+                })
+            })
+        }
+    }
 })

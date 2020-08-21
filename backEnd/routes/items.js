@@ -15,5 +15,8 @@ router.get("/api/item/:id", itemController.getItemById);
 router.delete("/api/item/:id", checkAuth, itemController.deleteItem);
 router.put("/api/increament/", checkAuth, itemController.increament);
 router.put("/api/decreament/", checkAuth, itemController.decreament);
-
+router.post("/api/itemcart", checkAuth, itemController.additemCart);
+router.put("/api/updateItemcart/:id", checkAuth, itemController.updateCart);
+router.delete("/api/deleteItemCart/:id", checkAuth, itemController.deleteCartItem);
+router.get("/api/CartItem", checkAuth, itemController.getCartItem);
 module.exports = router;

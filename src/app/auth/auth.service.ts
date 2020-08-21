@@ -134,6 +134,7 @@ export class AuthService {
     this.userId = null;
     this.userDetails = null;
     this.authListner.next(false);
+    localStorage.removeItem("userId")
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);

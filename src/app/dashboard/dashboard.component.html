@@ -1,5 +1,5 @@
 <nav class="navbar sticky-top navbar-light bg-light">
-  <!-- <a class="navbar-brand" (click)="filterItems('')">All</a> -->
+  <a class="navbar-brand" (click)="filterItems('')">All</a>
   <a class="navbar-brand" (click)="filterItems('Foodgrains')">Food Grains</a>
   <a class="navbar-brand" (click)="filterItems('Vegetable')">Vegetable</a>
   <a class="navbar-brand" (click)="filterItems('Bread/Bakery')">Bread/Bakery</a>
@@ -63,25 +63,25 @@
             </li>
           </ul>
           <div class="card-block row" style="text-align: center;padding: 1rem;">
-            <div class="col-3 col-sm-3">
+            <!-- <div class="col-3 col-sm-3">
               <div *ngIf="userDetails?.role == 'user' && item?.itemUser.indexOf(userDetails?._id) > -1"
                 (click)="increament(item)">
                 <i class="fa fa-plus-square" aria-hidden="true"></i>
               </div>
-            </div>
-            <div class="col-3 col-sm-6">
+            </div> -->
+            <!-- <div class="col-3 col-sm-6">
               <span
                 *ngIf="userDetails?.role == 'user' && item?.itemUser.indexOf(userDetails?._id) > -1 && item?.itemTotal != 0"><b>
                   Number of
                   {{item.itemName}}</b> {{item.itemNumber}}
                 <b>Total Price</b> {{item.itemTotal}}</span>
-            </div>
-            <div class="col-3 col-sm-3">
+            </div> -->
+            <!-- <div class="col-3 col-sm-3">
               <div *ngIf="userDetails?.role == 'user' && item?.itemUser.indexOf(userDetails?._id) > -1 "
                 (click)="decreament(item)">
                 <i class="fa fa-minus-square-o" aria-hidden="true"></i>
               </div>
-            </div>
+            </div> -->
 
             <div class="col-12 col-sm-12">
               <button type="button" class="btn btn-outline-primary"
@@ -98,18 +98,20 @@
               </button>
             </div>
             <div class="col-12 col-sm-12">
-              <button type="button" routerLink="/login" class="btn btn-outline-primary"
+              <button type="button" [routerLink]="['/cartview', item.id]" class="btn btn-outline-primary"
                 *ngIf="userDetails?.role == undefined">
-                Please login
+                View Item
               </button>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-outline-primary" *ngIf="userDetails?.role == 'Admin'">
+              <button type="button" class="btn btn-outline-primary" [routerLink]="['/edit', item.id]"
+                *ngIf="userDetails?.role == 'Admin'">
                 Edit
               </button>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-outline-danger" *ngIf="userDetails?.role == 'Admin'">
+              <button type="button" class="btn btn-outline-danger" (click)="Delete(item.id)"
+                *ngIf="userDetails?.role == 'Admin'">
                 Delete
               </button>
             </div>

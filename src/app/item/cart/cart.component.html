@@ -9,34 +9,40 @@
                 <thead *ngIf="items.length != 0">
                     <tr>
                         <th>Product</th>
-                        <th class="text-center">Quantity</th>
+                        <th>Quantity</th>
                         <th class="text-center">Price</th>
                         <th> </th>
                     </tr>
                 </thead>
                 <tbody *ngIf="items.length != 0">
                     <tr *ngFor="let item of items; let i = index ">
-                        <td class="col-sm-5 col-md-5">
+
+                        <td class="col-sm-5 col-md-5 col-5">
                             <div class="media">
                                 <a class="thumbnail pull-left">
                                     <img class="media-object" src="{{item.itemImg}}" style="width: 72px; height: 72px;">
                                 </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading "></h4>
-                                </div>
+
                             </div>
                         </td>
-                        <td class="col-sm-1 col-md-1 text-center">
-                            <strong>{{item.itemNumber}}</strong>
+                        <td class="col-sm-5 col-md-5 col-5 text-center">
+                            <div class="cart-info quantity">
+                                <div class="btn-increment-decrement" (click)="decrement_quantity(item)">-</div>
+
+                                <strong style="margin-left: 0.6rem;">{{item.itemNumber}}</strong>&nbsp;&nbsp;&nbsp;
+                                <div class="btn-increment-decrement" (click)="increment_quantity(item)">+</div>
+                            </div>
+
                         </td>
                         <td class="col-sm-1 col-md-1 text-center">
-                            <strong>${{item.itemTotal}}</strong>
+                            <strong>${{item.itemtotal}}</strong>
                         </td>
                         <td class="col-sm-1 col-md-1" (click)="removeItem(item)">
                             <button class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove"></span> Remove
                             </button>
                         </td>
+
                     </tr>
                     <tr>
                         <td>   </td>
@@ -83,7 +89,7 @@
                             </button>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-success" [routerLink]="['/checkout']">
                                 Checkout
                                 <span class="glyphicon glyphicon-play"></span>
                             </button>

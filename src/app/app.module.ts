@@ -17,6 +17,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CartComponent } from './item/cart/cart.component';
 import { ViewitemComponent } from './viewitem/viewitem.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ViewitemComponent } from './viewitem/viewitem.component';
     HeaderComponent,
     DashboardComponent,
     CartComponent,
-    ViewitemComponent
+    ViewitemComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,

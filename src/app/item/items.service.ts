@@ -34,6 +34,56 @@ export class ItemsService {
         console.log(response);
       });
   }
+  updateItem(
+    itemName: string,
+    itemImg: File,
+    itemPrice: string,
+    itemDesc: string,
+    itemAval: any,
+    itemCate: string,
+    itemQun: string,
+    id: any
+  ) {
+    let itemData: any | FormData;
+    if (typeof itemImg === "object") {
+      itemData.append("id", id)
+      itemData.append('itemName', itemName);
+      itemData.append('image', itemImg);
+      itemData.append('itemPrice', itemPrice);
+      itemData.append('itemDesc', itemDesc);
+      itemData.append('itemAval', itemAval);
+      itemData.append('itemCate', itemCate);
+      itemData.append('itemQuantity', itemQun);
+      itemData.append('itemTotal', itemPrice);
+    }
+    else {
+      itemData = {
+        id: id,
+        itemName: itemName,
+        image: itemImg,
+        itemPrice: itemPrice,
+        itemDesc: itemDesc,
+        itemAval: itemAval,
+        itemCate: itemCate,
+        itemQuantity: itemQun,
+        itemTotal: itemPrice
+      }
+    }
+    this.http
+      .put('http://localhost:3000/api/item/' + id, itemData)
+      .subscribe((response) => {
+        console.log(response);
+      });
+  }
+  deleteItem(id) {
+    return this.http
+      .delete('http://localhost:3000/api/item/' + id)
+      .subscribe((response) => {
+        console.log(response);
+      });
+  }
+
+
   getAllItems(postPerPage, currentPage) {
     let queryParam = `?pagesize=${postPerPage}&page=${currentPage}`;
     this.http
@@ -101,18 +151,33 @@ export class ItemsService {
   getOrderFromItems() {
     return this.iteml = JSON.parse(localStorage.getItem("items"));
   }
-  addtoCart(id: string, itemNumber: number, itemTotal: number, itemCart: boolean) {
+  addtoCart(id: string, ) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
-    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: itemCart };
+    const postId = { id: id, };
     return this.http.put("http://localhost:3000/api/increament/", postId);
   }
 
-  removetoCart(id: string, itemNumber: number, itemTotal: number, itemCart: boolean) {
+  removetoCart(id: string, ) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
-    const postId = { id: id, itemNumber: itemNumber, itemTotal: itemTotal, itemCart: itemCart };
+    const postId = { id: id, };
     return this.http.put("http://localhost:3000/api/decreament/", postId);
+  }
+  addItemToCart(id: string, itemName: string, itemImg: string, itemPrice: string, itemDesc: string, itemNumber: number, itemCate: string, itemQuantity: string, itemtotal: number) {
+    const postData = { id: id, itemName: itemName, itemNumber: itemNumber, itemPrice: itemPrice, itemImg: itemImg, itemDesc: itemDesc, itemCate: itemCate, itemQuantity: itemQuantity, itemtotal: itemtotal };
+    return this.http.post("http://localhost:3000/api/itemcart", postData);
+  }
+  updateToCart(id: string, itemName: string, itemImg: string, itemPrice: string, itemDesc: string, itemNumber: number, itemCate: string, itemQuantity: string, itemtotal: number) {
+    const postData = { id: id, itemName: itemName, itemNumber: itemNumber, itemPrice: itemPrice, itemImg: itemImg, itemDesc: itemDesc, itemCate: itemCate, itemQuantity: itemQuantity, itemtotal: itemtotal };
+    return this.http.put("http://localhost:3000/api/updateItemcart/" + id, postData);
+  }
+  deleteCartItem(id: string, ) {
+
+    return this.http.delete("http://localhost:3000/api/deleteItemCart/" + id);
+  }
+  getCartItem() {
+    return this.http.get("http://localhost:3000/api/CartItem")
   }
 
 }

@@ -59,14 +59,19 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     if (value != '') {
       this.items = this.itemFilter.filter((item) => item.itemCate == value);
     }
+    else {
+      this.items = this.itemFilter
+    }
     //console.log(this.items);
   }
   addToCart(item) {
     //item.itemCartStatus = true
     console.log(item);
-    this.itemSrv.addtoCart(item.id, 1, item.itemPrice, true).subscribe((resCart: any) => {
+    this.itemSrv.addItemToCart(item.id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, 1, item.itemCate, item.itemQuantity, item.itemPrice).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+      this.increament(resCart.cart._doc.itemCartItem)
+
     }, err => {
       console.log(err);
 
@@ -83,9 +88,9 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
 
   increament(item) {
-    item.itemTotal += item.itemPrice;
-    item.itemNumber += 1;
-    this.itemSrv.addtoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
+    //item.itemTotal += item.itemPrice;
+    //item.itemNumber += 1;
+    this.itemSrv.addtoCart(item).subscribe((resCart: any) => {
       console.log(resCart);
       this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
     }, err => {
@@ -98,20 +103,16 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
   }
   decreament(item) {
+    item.itemNumber == 1 ? item.itemNumber -= 1 : item.itemNumber
     if (item.itemNumber === 1 || item.itemNumber > 1) {
-      item.itemTotal -= item.itemPrice;
-      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
-      if (item.itemNumber !== 1) {
-        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemTotal, true).subscribe((resCart: any) => {
-          console.log(resCart);
-          this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
-        }, err => {
-          console.log(err);
-
-        })
+      if (item.itemNumber == 1) {
+        item.itemTotal = item.itemPrice
       } else {
-        item.itemPrice;
-        this.itemSrv.removetoCart(item.id, item.itemNumber, item.itemPrice, false).subscribe((resCart: any) => {
+        item.itemTotal -= item.itemPrice;
+      }
+      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
+      if (item.itemNumber != 0) {
+        this.itemSrv.removetoCart(item.id).subscribe((resCart: any) => {
           console.log(resCart);
           this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
         }, err => {
@@ -119,11 +120,27 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
         })
       }
+      item.itemPrice;
+
 
       //this.itemSrv.storeItemToOrder(item);
     } else {
-      item.itemCartStatus = false;
+      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
+      this.itemSrv.removetoCart(item.id).subscribe((resCart: any) => {
+        console.log(resCart);
+        this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+      }, err => {
+        console.log(err);
+
+      })
+
     }
+
+  }
+
+  Delete(itemId) {
+    this.itemSrv.deleteItem(itemId);
+    this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
 
   }
 
