@@ -19,4 +19,5 @@ router.post("/api/itemcart", checkAuth, itemController.additemCart);
 router.put("/api/updateItemcart/:id", checkAuth, itemController.updateCart);
 router.delete("/api/deleteItemCart/:id", checkAuth, itemController.deleteCartItem);
 router.get("/api/CartItem", checkAuth, itemController.getCartItem);
+router.put("/api/viewCartItemById/", checkAuth, itemController.viewItemsById);
 module.exports = router;

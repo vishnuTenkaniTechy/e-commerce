@@ -1,17 +1,17 @@
 <div class="container-fluid" style="padding: 2rem;">
-    <div class="row" *ngIf="viewItem != null">
-        <div class="col col-md-6"><img src="{{viewItem.itemImg}}" style="width: 100%;"></div>
+    <div class="row" *ngIf="viewItem?.length != 0">
+        <div class="col col-md-6"><img src="{{viewItem[0].itemImg}}" style="width: 100%;"></div>
         <div class="col col-md-6">
-            <h2>Item Name : {{viewItem.itemName}}</h2>
-            <h4><b>Item Category :</b> {{viewItem.itemCate}}</h4>
+            <h2>Item Name : {{viewItem[0].itemName}}</h2>
+            <h4><b>Item Category :</b> {{viewItem[0].itemCate}}</h4>
             <p>
-                <b>Item Description : </b> {{viewItem.itemDesc}}
+                <b>Item Description : </b> {{viewItem[0].itemDesc}}
             </p>
-            <p><b>Item Price : </b>{{viewItem.itemPrice}}</p>
+            <p><b>Item Price : </b>{{viewItem[0].itemPrice}}</p>
             <div class="row" style="justify-content: center;">
                 <div class="col-sm-1">
                     <div *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1"
-                        (click)="increament(viewItem)">
+                        (click)="increament(viewItem[0])">
                         <i class="fa fa-plus-square" aria-hidden="true"></i>
                     </div>
                 </div>
@@ -19,12 +19,12 @@
                     <span
                         *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1 && viewItem?.itemTotal != 0"><b>Number
                             of
-                            {{viewItem.itemName}}</b> {{viewItem.itemNumber}}
-                        <b>Total Price</b> {{viewItem.itemTotal}}</span>
+                            {{viewItem[0].itemName}}</b> {{viewItem[0].itemNumber}}
+                        <b>Total Price</b> {{viewItem[0].itemtotal}}</span>
                 </div>
                 <div class="col-sm-1">
                     <div *ngIf="userDetails?.role == 'user' && viewItem?.itemUser?.indexOf(userDetails?._id) > -1 "
-                        (click)="decreament(viewItem)">
+                        (click)="decreament(viewItem[0])">
                         <i class="fa fa-minus-square-o" aria-hidden="true"></i>
                     </div>
                 </div>
@@ -36,19 +36,14 @@
                         Go to Cart
                     </button>
                 </div>
-                <div class="col-12 col-sm-12">
-                    <button type="button" class="btn btn-outline-primary"
-                        *ngIf="userDetails?.role == 'user' && !(viewItem?.itemUser?.indexOf(userDetails?._id) > -1)"
-                        (click)="addToCart(viewItem)">
-                        Add to your Basket
-                    </button>
-                </div>
-                <div class="col-12 col-sm-12">
-                    <button type="button" routerLink="/login" class="btn btn-outline-primary"
-                        *ngIf="userDetails?.role == undefined">
-                        Please login
-                    </button>
-                </div>
+
+
             </div>
         </div>
     </div>
+    <div class="row" *ngIf="viewItem?.length == 0">
+        <div class="col-12">
+            Your View cart item is empty, please add to basket!.
+        </div>
+    </div>
+</div>

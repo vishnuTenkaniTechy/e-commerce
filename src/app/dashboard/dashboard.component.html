@@ -38,7 +38,8 @@
         <b>No items Avaliable yet!</b>
       </div>
     </div>
-    <div class="row" *ngIf="items.length > 0">
+    <mat-spinner strokeWidth="5" [diameter]="50" *ngIf="isLoading && isLoading"></mat-spinner>
+    <div class="row" *ngIf="items.length > 0 && !isLoading">
       <div class="col-sm-4" *ngFor="let item of items">
         <div class="card">
           <img class="card-img-top img-fluid" [routerLink]="['/cartview', item.id]" [src]="item.itemImg"
@@ -92,17 +93,11 @@
             </div>
             <div class="col-12 col-sm-12">
               <button type="button" class="btn btn-outline-primary"
-                *ngIf="userDetails?.role == 'user' && !(item?.itemUser.indexOf(userDetails?._id) > -1)"
-                (click)="addToCart(item)">
+                *ngIf="!(item?.itemUser.indexOf(userDetails?._id) > -1)" (click)="addToCart(item)">
                 Add to your Basket
               </button>
             </div>
-            <div class="col-12 col-sm-12">
-              <button type="button" [routerLink]="['/cartview', item.id]" class="btn btn-outline-primary"
-                *ngIf="userDetails?.role == undefined">
-                View Item
-              </button>
-            </div>
+
             <div class="col-6">
               <button type="button" class="btn btn-outline-primary" [routerLink]="['/edit', item.id]"
                 *ngIf="userDetails?.role == 'Admin'">

@@ -179,5 +179,11 @@ export class ItemsService {
   getCartItem() {
     return this.http.get("http://localhost:3000/api/CartItem")
   }
+  viewCartItemById(id: string, ) {
+
+    //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
+    const postId = { id: id, };
+    return this.http.put("http://localhost:3000/api/viewCartItemById/", postId);
+  }
 
 }

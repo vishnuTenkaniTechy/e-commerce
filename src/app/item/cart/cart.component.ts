@@ -36,6 +36,7 @@ export class CartComponent implements OnInit {
       this.items = cartData.test,
         this.userDetails = this.authSrv.getUserDetails();
       this.items = this.items.filter((s) => s.itemCartUser === this.userDetails._id);
+      this.subTotal = 0;
       this.items.map((item) => {
         this.subTotal += item.itemtotal;
         //console.log('vv', item, this.subTotal);
@@ -80,7 +81,7 @@ export class CartComponent implements OnInit {
     let number = item.itemNumber += 1;
     console.log(total, number);
 
-    if (item.number != 8) {
+    if (item.itemNumber != 8) {
       this.itemSrv.updateToCart(item._id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, number, item.itemCate, item.itemQuantity, total).subscribe((resUpdate) => {
         if (resUpdate) {
           this.getCartItem();
@@ -95,7 +96,24 @@ export class CartComponent implements OnInit {
     }
   }
   decrement_quantity(item: any) {
+    let total = item.itemtotal -= item.itemPrice;
+    let number = item.itemNumber -= 1;
+    console.log(total, number);
 
+    if (item.itemNumber != 0) {
+      this.itemSrv.updateToCart(item._id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, number, item.itemCate, item.itemQuantity, total).subscribe((resUpdate) => {
+        if (resUpdate) {
+          this.getCartItem();
+        }
+      }, err => {
+        console.log(err);
+
+      })
+    }
+    else {
+      //alert("You are exceed your limit")
+      this.removeItem(item);
+    }
   }
 
 

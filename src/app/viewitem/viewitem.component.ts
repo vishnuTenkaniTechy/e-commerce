@@ -19,17 +19,21 @@ export class ViewitemComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id')
-      this.itemSrv.getViewItemViewById(params.get('id')).subscribe((item => {
-        this.viewItem = item;
-        ///console.log('vv', item);
+      this.loadFunc(this.id)
 
-      }))
     });
   }
   ngAfterViewChecked() {
     this.userDetails = this.authSrv.getUserDetails();
     this.cdr.detectChanges();
     // console.log(this.userDetails);
+  }
+  loadFunc(id) {
+    this.itemSrv.viewCartItemById(id).subscribe((item => {
+      this.viewItem = item;
+      console.log('vv', this.viewItem);
+
+    }))
   }
   addToCart(item) {
     //item.itemCartStatus = true
@@ -57,66 +61,55 @@ export class ViewitemComponent implements OnInit {
 
 
   increament(item) {
-    item.itemTotal += item.itemPrice;
-    item.itemNumber += 1;
-    this.itemSrv.addtoCart(item._id).subscribe((resCart: any) => {
-      console.log(resCart);
-      this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
-        this.viewItem = item;
-        ///console.log('vv', item);
+    let total = item.itemtotal += item.itemPrice;
+    let number = item.itemNumber += 1;
+    console.log(total, number);
 
-      }))
-    }, err => {
-      console.log(err);
-
-    })
-
-    //console.log('total', item.itemTotal);
-    //this.itemSrv.storeItemToOrder(item);
-
-  }
-  decreament(item) {
-    item.itemNumber == 1 ? item.itemNumber -= 1 : item.itemNumber
-    if (item.itemNumber === 1 || item.itemNumber > 1) {
-      if (item.itemNumber == 1) {
-        item.itemTotal = item.itemPrice
-      } else {
-        item.itemTotal -= item.itemPrice;
-      }
-      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
-      if (item.itemNumber != 0) {
-        this.itemSrv.removetoCart(item._id).subscribe((resCart: any) => {
-          console.log(resCart);
-          this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
-            this.viewItem = item;
-            ///console.log('vv', item);
-
-          }))
-        }, err => {
-          console.log(err);
-
-        })
-      }
-      item.itemPrice;
-
-
-      //this.itemSrv.storeItemToOrder(item);
-    } else {
-      item.itemNumber > 1 ? item.itemNumber -= 1 : item.itemNumber
-      this.itemSrv.removetoCart(item._id).subscribe((resCart: any) => {
-        console.log(resCart);
-        this.itemSrv.getViewItemViewById(this.id).subscribe((item => {
-          this.viewItem = item;
-          ///console.log('vv', item);
-
-        }))
+    if (item.itemNumber != 8) {
+      this.itemSrv.updateToCart(item._id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, number, item.itemCate, item.itemQuantity, total).subscribe((resUpdate) => {
+        if (resUpdate) {
+          this.loadFunc(this.id);
+        }
       }, err => {
         console.log(err);
 
       })
-
+    }
+    else {
+      alert("You are exceed your limit")
     }
 
+  }
+  decreament(item) {
+    let total = item.itemtotal -= item.itemPrice;
+    let number = item.itemNumber -= 1;
+    console.log(total, number);
+
+    if (item.itemNumber != 0) {
+      this.itemSrv.updateToCart(item._id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, number, item.itemCate, item.itemQuantity, total).subscribe((resUpdate) => {
+        if (resUpdate) {
+          this.loadFunc(this.id)
+        }
+      }, err => {
+        console.log(err);
+
+      })
+    }
+    else {
+      //alert("You are exceed your limit")
+      this.removeItem(item);
+    }
+  }
+
+  removeItem(item) {
+    //this.subTotal = 0
+    this.itemSrv.deleteCartItem(item._id).subscribe((res) => {
+      console.log(res);
+      this.itemSrv.removetoCart(item.itemCartItem).subscribe((resCart: any) => {
+        console.log(resCart);
+        this.loadFunc(this.id)
+      })
+    })
   }
 
 }

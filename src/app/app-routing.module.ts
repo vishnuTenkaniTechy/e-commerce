@@ -8,23 +8,26 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CartComponent } from './item/cart/cart.component';
 import { ViewitemComponent } from './viewitem/viewitem.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-//import { RegisterComponentAdmin } from './admin/register/register.component';
+import { AuthGuard } from './auth/auth.guard';
+import { AdminGuard } from './auth/admin.guard';
+
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'adminRegister', component: RegisterAdminComponent },
-  { path: 'addItem', component: AddItemComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'cartview/:id', component: ViewitemComponent },
-  { path: 'checkout', component: CheckoutComponent },
-  { path: "edit/:itemId", component: AddItemComponent }
+  { path: 'addItem', component: AddItemComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+  { path: 'cartview/:id', component: ViewitemComponent, canActivate: [AuthGuard] },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] },
+  { path: "edit/:itemId", component: AddItemComponent, canActivate: [AuthGuard, AdminGuard] }
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [AuthGuard, AdminGuard]
 })
 export class AppRoutingModule { }

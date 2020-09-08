@@ -236,6 +236,28 @@ exports.getItemById = ((req, res, next) => {
         }
     })
 })
+exports.viewItemsById = ((req, res, next) => {
+    Items.findOne({ _id: req.body.id }, (err, cartitem) => {
+        if (!cartitem) {
+            console.log(err);
+
+            res.status(201).json({ message: "failed to find", cart: cartitem })
+        } else {
+            // cartItem.find( itemCartItem: cartitem._id , function(err, items) => {
+            //     if (!items) {
+            //         res.status(201).json({ message: "failed to find" })
+            //     } else {
+            //         res.status(200).json({ message: "fecthed items", item: items, err: err })
+            //     }
+            // })
+            //res.json(cartitem)
+            cartItem.find({ itemCartItem: cartitem._id })
+                .then(ebooks => res.json(ebooks))
+                .catch(err => res.status(404).json({ success: false }));
+
+        }
+    })
+})
 
 exports.decreament = ((req, res, next) => {
     Items.findOne({ _id: req.body.id }, (err, item) => {

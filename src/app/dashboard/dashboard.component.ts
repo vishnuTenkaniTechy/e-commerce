@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   iteml: any;
   private itemsSub: Subscription;
   tempItem: any[] = [];
+  isLoading = false;
   constructor(
     private itemSrv: ItemsService,
     private authSrv: AuthService,
@@ -35,8 +36,10 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     console.log('cartItems', this.iteml);
 
     this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
+    this.isLoading = true;
     this.itemsSub = this.itemSrv.getPostUpdateListener().subscribe(
       (postsData: any) => {
+        this.isLoading = false;
         //  this.isLoading = false;
         this.totalPosts = postsData.maxPostCout;
         this.items = postsData.items;

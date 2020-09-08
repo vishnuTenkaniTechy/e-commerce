@@ -65,7 +65,8 @@ exports.loginUser = (req, res, next) => {
             token: token,
             expiresIn: 3600,
             userId: fectchedUser._id,
-            userDetails: fectchedUser
+            userDetails: fectchedUser,
+            role: fectchedUser.role
         })
     }).catch((err) => {
         return res.status(401).json({

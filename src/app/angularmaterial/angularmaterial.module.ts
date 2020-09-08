@@ -13,11 +13,27 @@ import {
   MatOptionModule,
   MatCheckboxModule,
   MatBadgeModule
-} from '@angular/material';
+} from "@angular/material";
 
 @NgModule({
   declarations: [],
+  imports: [
+    MatInputModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatMenuModule,
+    MatDialogModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatBadgeModule,
 
+  ],
   exports: [
     MatInputModule,
     MatCardModule,
@@ -32,7 +48,7 @@ import {
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatBadgeModule
+    MatBadgeModule,
   ],
 })
 export class AngularmaterialModule { }
