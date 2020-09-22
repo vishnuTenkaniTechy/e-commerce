@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, AfterViewChecked } from '@angular
 import { AuthService } from 'src/app/auth/auth.service';
 import { ItemsService } from '../items.service';
 import { Subscription } from 'rxjs';
+import { AlertfyService } from 'src/app/alertfy.service';
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +24,8 @@ export class CartComponent implements OnInit {
   constructor(
     private itemSrv: ItemsService,
     private authSrv: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private alertify: AlertfyService
   ) { }
 
   ngOnInit(): void {
@@ -68,8 +70,10 @@ export class CartComponent implements OnInit {
   }
   removeItem(item) {
     //this.subTotal = 0
-    this.itemSrv.deleteCartItem(item._id).subscribe((res) => {
-      console.log(res);
+    this.itemSrv.deleteCartItem(item._id).subscribe((res: any) => {
+      if (res.message === 'item deleted!') {
+        this.alertify.success('your item is deleted from cart!');
+      }
       this.itemSrv.removetoCart(item.itemCartItem).subscribe((resCart: any) => {
         console.log(resCart);
         this.getCartItem();
@@ -77,11 +81,13 @@ export class CartComponent implements OnInit {
     })
   }
   increment_quantity(item: any) {
-    let total = item.itemtotal += item.itemPrice;
-    let number = item.itemNumber += 1;
-    console.log(total, number);
 
-    if (item.itemNumber != 8) {
+
+    if (item.itemNumber < 8) {
+      let total = item.itemtotal += item.itemPrice;
+      let number = item.itemNumber += 1;
+      console.log(total, number);
+      // tslint:disable-next-line: max-line-length
       this.itemSrv.updateToCart(item._id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, number, item.itemCate, item.itemQuantity, total).subscribe((resUpdate) => {
         if (resUpdate) {
           this.getCartItem();
@@ -89,10 +95,10 @@ export class CartComponent implements OnInit {
       }, err => {
         console.log(err);
 
-      })
+      });
     }
     else {
-      alert("You are exceed your limit")
+      this.alertify.error('you exceed your item limit!');
     }
   }
   decrement_quantity(item: any) {

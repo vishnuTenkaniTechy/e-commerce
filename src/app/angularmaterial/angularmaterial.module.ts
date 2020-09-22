@@ -13,7 +13,7 @@ import {
   MatOptionModule,
   MatCheckboxModule,
   MatBadgeModule
-} from "@angular/material";
+} from '@angular/material';
 
 @NgModule({
   declarations: [],

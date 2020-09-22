@@ -8,6 +8,7 @@ import { ItemsService } from '../item/items.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { AlertfyService } from '../alertfy.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     private authSrv: AuthService,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private aletfy: AlertfyService
   ) {
     this.iteml = this.itemSrv.getOrderFromItems();
     console.log('cartItems', this.iteml);
@@ -68,12 +70,18 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     //console.log(this.items);
   }
   addToCart(item) {
-    //item.itemCartStatus = true
+    // item.itemCartStatus = true
     console.log(item);
+    // tslint:disable-next-line: max-line-length
     this.itemSrv.addItemToCart(item.id, item.itemName, item.itemImg, item.itemPrice, item.itemDesc, 1, item.itemCate, item.itemQuantity, item.itemPrice).subscribe((resCart: any) => {
-      console.log(resCart);
+
+      if (resCart.message == 'add to cart successFully') {
+        this.aletfy.success('Your item is added to cart');
+
+      }
+      this.aletfy.success('Your item is added to cart');
       this.itemSrv.getAllItems(this.postPerPage, this.currentPage);
-      this.increament(resCart.cart._doc.itemCartItem)
+      this.increament(resCart.cart._doc.itemCartItem);
 
     }, err => {
       console.log(err);

@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AlertfyService } from '../alertfy.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ItemsService {
-  constructor(private http: HttpClient, private route: Router) { }
+  constructor(private http: HttpClient, private route: Router, private alertify: AlertfyService) { }
   private items: any[] = [];
   private itemsUpdated = new Subject<{ items: any[]; maxPostCout: number }>();
   addItem(
@@ -30,8 +31,13 @@ export class ItemsService {
     itemData.append('itemTotal', itemPrice);
     this.http
       .post('http://localhost:3000/api/item', itemData)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         console.log(response);
+
+        if (response.message === 'item added successfullys') {
+          this.alertify.success('Item added Successfully');
+          this.route.navigate(['/']);
+        }
       });
   }
   updateItem(
@@ -45,8 +51,8 @@ export class ItemsService {
     id: any
   ) {
     let itemData: any | FormData;
-    if (typeof itemImg === "object") {
-      itemData.append("id", id)
+    if (typeof itemImg === 'object') {
+      itemData.append('id', id)
       itemData.append('itemName', itemName);
       itemData.append('image', itemImg);
       itemData.append('itemPrice', itemPrice);
@@ -71,15 +77,21 @@ export class ItemsService {
     }
     this.http
       .put('http://localhost:3000/api/item/' + id, itemData)
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe((response: any) => {
+        if (response.message === 'updated item successfully') {
+          this.alertify.success('Updated item Successfully');
+          this.route.navigate(['/']);
+        }
       });
   }
   deleteItem(id) {
     return this.http
       .delete('http://localhost:3000/api/item/' + id)
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe((response: any) => {
+        if (response.message === 'item deleted!') {
+          this.alertify.success('item deleted successfully');
+
+        }
       });
   }
 
@@ -151,14 +163,14 @@ export class ItemsService {
   getOrderFromItems() {
     return this.iteml = JSON.parse(localStorage.getItem("items"));
   }
-  addtoCart(id: string, ) {
+  addtoCart(id: string,) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
     const postId = { id: id, };
     return this.http.put("http://localhost:3000/api/increament/", postId);
   }
 
-  removetoCart(id: string, ) {
+  removetoCart(id: string,) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
     const postId = { id: id, };
@@ -172,14 +184,14 @@ export class ItemsService {
     const postData = { id: id, itemName: itemName, itemNumber: itemNumber, itemPrice: itemPrice, itemImg: itemImg, itemDesc: itemDesc, itemCate: itemCate, itemQuantity: itemQuantity, itemtotal: itemtotal };
     return this.http.put("http://localhost:3000/api/updateItemcart/" + id, postData);
   }
-  deleteCartItem(id: string, ) {
+  deleteCartItem(id: string,) {
 
     return this.http.delete("http://localhost:3000/api/deleteItemCart/" + id);
   }
   getCartItem() {
     return this.http.get("http://localhost:3000/api/CartItem")
   }
-  viewCartItemById(id: string, ) {
+  viewCartItemById(id: string,) {
 
     //const post:Post={id:id,title: null, content: null,imagePath:null,creator:null,likeValue:null}
     const postId = { id: id, };

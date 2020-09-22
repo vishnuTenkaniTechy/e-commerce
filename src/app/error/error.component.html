@@ -2,6 +2,7 @@
 <div mat-dailog-content>
     <p>{{data.message}}</p>
 </div>
-<div>
-    <button mat-button mat-dailog-action mat-dialog-close>Cancel</button>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="closeDailogue()">Close</button>
+
 </div>
